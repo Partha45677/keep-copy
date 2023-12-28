@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "617821772610",
+    "project_id": "keep-note-818d2",
+    "storage_bucket": "keep-note-818d2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:617821772610:android:5860cd39cb91a68a6a46db",
+        "android_client_info": {
+          "package_name": "com.example.keepnote"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "617821772610-io2blbvj5qe3abn8dakg36ff0d79p0f2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.keepnote",
+            "certificate_hash": "c7e0059023da4e488c279ca84648897be82c8abd"
+          }
+        },
+        {
+          "client_id": "617821772610-bkpisfbphecuotrc7dk8v5v7fu85ck7n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5acvsuYp085IGGFxWiNE1WP1cLKqNxks"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "617821772610-bkpisfbphecuotrc7dk8v5v7fu85ck7n.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "617821772610-hogkojm724hlaedv915b6528v7u9jp8a.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.keepnote.RunnerTests"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
