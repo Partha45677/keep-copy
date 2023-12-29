@@ -4,7 +4,6 @@ import 'package:keepnote/NoteShow.dart';
 import 'package:keepnote/SearchPage.dart';
 import 'package:keepnote/Services/databaseModel.dart';
 import 'package:keepnote/Services/db.dart';
-import 'package:keepnote/SideMenuBar.dart';
 import 'package:keepnote/colors.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
@@ -16,12 +15,9 @@ class archieve extends StatefulWidget {
 }
 
 class _homiState extends State<archieve> {
-  GlobalKey<ScaffoldState> _drawerkey = GlobalKey();
   bool isLoading = true;
+  bool isGridView = true;
   late List<Note> notesList;
-  String note =
-      "THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE";
-  String note1 = "THIS IS NOTE THIS IS NOTE THIS IS NOTE";
   @override
   void initState() {
     super.initState();
@@ -77,9 +73,6 @@ class _homiState extends State<archieve> {
                 color: white,
               ),
             ),
-            endDrawerEnableOpenDragGesture: true,
-            key: _drawerkey,
-            drawer: Sidebar(),
             backgroundColor: bgColor,
             body: SafeArea(
               child: SingleChildScrollView(
@@ -96,10 +89,10 @@ class _homiState extends State<archieve> {
                             children: [
                               IconButton(
                                 onPressed: () {
-                                  _drawerkey.currentState!.openDrawer();
+                                  Navigator.pop(context);
                                 },
                                 icon: Icon(
-                                  Icons.menu,
+                                  Icons.arrow_back,
                                   color: white,
                                   size: 25,
                                 ),
@@ -171,9 +164,13 @@ class _homiState extends State<archieve> {
                                         ),
                                       ),
                                     ),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      setState(() {
+                                        isGridView = !isGridView;
+                                      });
+                                    },
                                     icon: Icon(
-                                      Icons.grid_view,
+                                      isGridView ? Icons.grid_view : Icons.list,
                                       color: white,
                                     ))
                               ],
@@ -201,7 +198,6 @@ class _homiState extends State<archieve> {
                       ],
                     ),
                     NoteSectionAll(),
-                    // NoteListView()
                   ]),
                 ),
               ),
@@ -210,52 +206,54 @@ class _homiState extends State<archieve> {
   }
 
   Widget NoteSectionAll() {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-      child: StaggeredGridView.countBuilder(
-        physics: NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        itemCount: notesList.length,
-        mainAxisSpacing: 12,
-        crossAxisSpacing: 12,
-        crossAxisCount: 4,
-        staggeredTileBuilder: (index) => StaggeredTile.fit(2),
-        itemBuilder: (context, index) => InkWell(
-          onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => noteview(
-                          note: notesList[index],
-                        )));
-          },
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 6, vertical: 4),
-            decoration: BoxDecoration(
-                border: Border.all(color: white.withOpacity(0.4)),
-                borderRadius: BorderRadius.circular(7)),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  notesList[index].title,
-                  style: TextStyle(color: white, fontSize: 20),
+    return isGridView
+        ? Container(
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+            child: StaggeredGridView.countBuilder(
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: notesList.length,
+              mainAxisSpacing: 12,
+              crossAxisSpacing: 12,
+              crossAxisCount: 4,
+              staggeredTileBuilder: (index) => StaggeredTile.fit(2),
+              itemBuilder: (context, index) => InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => noteview(
+                                note: notesList[index],
+                              )));
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+                  decoration: BoxDecoration(
+                      border: Border.all(color: white.withOpacity(0.4)),
+                      borderRadius: BorderRadius.circular(7)),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        notesList[index].title,
+                        style: TextStyle(color: white, fontSize: 20),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        notesList[index].content.length > 250
+                            ? "${notesList[index].content.substring(0, 250)}...."
+                            : notesList[index].content,
+                        style: TextStyle(color: white),
+                      )
+                    ],
+                  ),
                 ),
-                SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  notesList[index].content.length > 250
-                      ? "${notesList[index].content.substring(0, 250)}...."
-                      : notesList[index].content,
-                  style: TextStyle(color: white),
-                )
-              ],
+              ),
             ),
-          ),
-        ),
-      ),
-    );
+          )
+        : NoteListView();
   }
 
   Widget NoteListView() {
@@ -264,7 +262,7 @@ class _homiState extends State<archieve> {
       child: ListView.builder(
         physics: NeverScrollableScrollPhysics(),
         shrinkWrap: true,
-        itemCount: 10,
+        itemCount: notesList.length,
         itemBuilder: (context, index) => InkWell(
           onTap: () {
             Navigator.push(
@@ -284,18 +282,16 @@ class _homiState extends State<archieve> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "HEADING",
+                  notesList[index].title,
                   style: TextStyle(color: white, fontSize: 20),
                 ),
                 SizedBox(
                   height: 10,
                 ),
                 Text(
-                  index.isEven
-                      ? note.length > 250
-                          ? "${note.substring(0, 250)}...."
-                          : note
-                      : note1,
+                  notesList[index].content.length > 250
+                      ? "${notesList[index].content.substring(0, 250)}...."
+                      : notesList[index].content,
                   style: TextStyle(color: white),
                 )
               ],

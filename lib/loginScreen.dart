@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
 import 'package:keepnote/Services/auth.dart';
+import 'package:keepnote/Services/db.dart';
 import 'package:keepnote/Services/dbprof.dart';
 import 'package:keepnote/Services/firestoredb.dart';
 import 'package:keepnote/colors.dart';
@@ -25,7 +26,6 @@ class _loginState extends State<login> {
       constant.img = (await LocalDataSaver.getImg())!;
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => homi()));
-      await FireDB().getAllStoredNotes();
     }
   }
 
@@ -43,6 +43,8 @@ class _loginState extends State<login> {
     constant.img = (await LocalDataSaver.getImg())!;
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => homi()));
+    LocalDataSaver.saveSync(false);
+    await FireDB().getAllStoredNotes();
   }
 
   @override

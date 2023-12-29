@@ -45,6 +45,12 @@ class NotesDatabase {
     return note.copy(id: id);
   }
 
+  Future<Note?> insertFireEntry(Note note) async {
+    final db = await instance.database;
+    final id = await db!.insert(NotesImpNames.TableName, note.toJson());
+    return note.copy(id: id);
+  }
+
   Future<List<Note>> readAllNotes() async {
     final db = await instance.database;
     final orderBy = '${NotesImpNames.createdTime} ASC';

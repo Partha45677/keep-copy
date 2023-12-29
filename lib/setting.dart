@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:keepnote/Services/dbprof.dart';
 import 'package:keepnote/colors.dart';
 import 'package:keepnote/Services/auth.dart';
 import 'package:keepnote/loginScreen.dart';
@@ -12,6 +13,23 @@ class Setting extends StatefulWidget {
 
 class _SettingState extends State<Setting> {
   bool value = false;
+  getSyncState() async {
+    await LocalDataSaver.getSync().then((valu) {
+      if (valu != null) {
+        setState(() {
+          value = valu;
+        });
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getSyncState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,6 +65,7 @@ class _SettingState extends State<Setting> {
                     onChanged: (switchValue) {
                       setState(() {
                         this.value = switchValue;
+                        LocalDataSaver.saveSync(switchValue);
                       });
                     }),
               )

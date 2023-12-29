@@ -5,7 +5,6 @@ import 'package:keepnote/SearchPage.dart';
 import 'package:keepnote/Services/databaseModel.dart';
 import 'package:keepnote/Services/db.dart';
 import 'package:keepnote/Services/dbprof.dart';
-import 'package:keepnote/Services/firestoredb.dart';
 import 'package:keepnote/SideMenuBar.dart';
 import 'package:keepnote/colors.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -30,6 +29,19 @@ class _homiState extends State<homi> {
     // TODO: implement initState
     super.initState();
     readEntry();
+    getHomeState();
+  }
+
+  getHomeState() async {
+    await LocalDataSaver.getHomestateData().then((value) {
+      if (value != null) {
+        setState(() {
+          isGridView = value;
+        });
+      } else {
+        isGridView = true;
+      }
+    });
   }
 
   Future createEntry(Note note) async {
@@ -177,6 +189,8 @@ class _homiState extends State<homi> {
                                   onPressed: () {
                                     setState(() {
                                       isGridView = !isGridView;
+                                      LocalDataSaver.saveHomestateData(
+                                          isGridView);
                                     });
                                   },
                                   child: Icon(
@@ -435,6 +449,7 @@ class _homiState extends State<homi> {
   Widget profiles() {
     return Container(
       width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height,
       decoration: BoxDecoration(
         color: cardColor,
       ),
@@ -458,7 +473,7 @@ class _homiState extends State<homi> {
                   color: white, fontSize: 25, fontWeight: FontWeight.bold),
             ),
             SizedBox(
-              height: 10,
+              height: 5,
             ),
             Text(
               constant.email,
@@ -466,10 +481,10 @@ class _homiState extends State<homi> {
                   color: white, fontSize: 19, fontWeight: FontWeight.bold),
             ),
             SizedBox(
-              height: 15,
+              height: 1,
             ),
             TextButton(
-              onPressed: () async {
+              onPressed: () {
                 signOut();
                 Navigator.pushReplacement(
                     context, MaterialPageRoute(builder: (context) => login()));

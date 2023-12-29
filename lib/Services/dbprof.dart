@@ -5,6 +5,8 @@ class LocalDataSaver {
   static String emailKey = "EMAILKEY";
   static String imgKey = "IMGKEY";
   static String logKey = "LOGWALIKEY";
+  static String homestag = "HOMESTAG";
+  static String Synckey = "SYNCKEY";
 
   static Future<bool> saveName(String username) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -44,5 +46,25 @@ class LocalDataSaver {
   static Future<bool?> getLogData() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     return await preferences.getBool(logKey);
+  }
+
+  static Future<bool?> saveHomestateData(bool homestate) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    return await preferences.setBool(homestag, homestate);
+  }
+
+  static Future<bool?> getHomestateData() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    return await preferences.getBool(homestag);
+  }
+
+  static Future<bool?> saveSync(bool syco) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    return await preferences.setBool(Synckey, syco);
+  }
+
+  static Future<bool?> getSync() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    return await preferences.getBool(Synckey);
   }
 }
